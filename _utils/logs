@@ -1,0 +1,7 @@
+/var/log/apache-sp/error.log
+/var/log/apache-sp/access.log
+/var/log/mysql/error.log
+/var/log/mysql.err
+/var/log/mysql.log
+/var/log/php7.1-fpm-sp.log
+_utils/logs
