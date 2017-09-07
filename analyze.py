@@ -1,29 +1,53 @@
 #!/usr/bin/env python
-from _utils import constants,Data,LogFile,notifications
-import sys,os,re
+import functions,sys
+from _utils import config
 
-alert_types=['error','fatal','critical','notice']
+args=sys.argv[1:]
+#print(args)
 
-data = Data.Data()
-all_logs = data.readList()
-log_to_notify=[]
-for log in all_logs:
-	lgFile = LogFile.LogFile(log)
-	
-	latestChanges=lgFile.getLatestChanges()
-	for changedLine in latestChanges:
-		for alert_type in alert_types:
-			if not changedLine.lower().find(alert_type) == -1:
-				log_to_notify.append(changedLine)
-			# END IF
-		# END FOR
-	# END FOR
-	if len(latestChanges)>0:
-		lgFile.modified()
-	# END IF
-	lgFile.close();
-# END FOR
+mainCommand=args[0].lower()
 
-if len(log_to_notify) > 0:
-	notifications.sendEmail("vino.gcs@gmail.com",log_to_notify)
-print("DONE")
+if mainCommand == 'process':
+	functions.process()
+elif mainCommand == 'config':
+	if len(args) == 1:
+		print("Invalid command")
+		exit()
+	subCommand = args[1].lower()
+	config = config.Config()
+	if subCommand == 'notifylist':
+		if len(args) == 2:
+			print(config.get('notifyList'))
+		else:
+			toAdd = args[2]
+			if toAdd in config._config['notifyList']:
+				print("Type already exists")
+			else:
+				if toAdd[:1]=='-':
+					toRemove=toAdd[1:]
+					if not toRemove in config._config['notifyList']:
+						print("Type '{}' not exists!".format(toRemove))
+					else:
+						print("Removing '{}'".format(toRemove))
+						config._config['notifyList'].remove(toRemove)
+				else:
+					print("Adding '{}'...".format(toAdd))
+					config._config['notifyList'].append(toAdd)
+					print(config._config['notifyList'])
+				config.save()
+				print("NotifyList updated.")
+	elif subCommand == 'email':
+		if len(args) == 2:
+			print(config.get('email'))
+		elif len(args) == 3:
+			if 'email' in config._config:
+				print(config._config['email'].get(args[2]))
+			else:
+				print(None)
+		else:
+			if not 'email' in config._config:
+				config._config['email']={};
+			config._config['email'][args[2]]=args[3]
+		config.save()
+	else:
+		print("Not valid command...")

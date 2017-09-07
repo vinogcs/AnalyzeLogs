@@ -1,6 +1,5 @@
 import os.path
 import simplejson
-import json
 from time import gmtime, strftime
 
 class Data:

@@ -1,6 +1,5 @@
 import smtplib
-#from _utils import constants
-import constants
+from _utils import constants
 
 def sendEmail(to,content):
 	# Prepare message
