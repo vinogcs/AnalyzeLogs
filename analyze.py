@@ -8,7 +8,8 @@ args=sys.argv[1:]
 mainCommand=args[0].lower()
 
 if mainCommand == 'process':
-	functions.process()
+	processArgs=args[1:]
+	functions.process(processArgs)
 elif mainCommand == 'config':
 	if len(args) == 1:
 		print("Invalid command")

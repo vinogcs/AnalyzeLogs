@@ -1,7 +1,7 @@
-from _utils import constants,Data,LogFile,notifications
+from _utils import constants,Data,LogFile,notifications,config
 import sys,os,re
 
-def process():
+def process(args):
 	alert_types=['error','fatal','critical','notice']
 
 	data = Data.Data()
