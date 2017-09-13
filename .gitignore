@@ -1,2 +1,6 @@
 **/__pycache__
 *.pyc
+
+# Ignore data files.
+# it will be created as per user's input later
+**/*.json
