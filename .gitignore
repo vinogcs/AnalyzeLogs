@@ -3,4 +3,5 @@
 
 # Ignore data files.
 # it will be created as per user's input later
-**/*.json
+_utils/config.json
+_utils/data.json
